@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SecureID — Create account</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="brand-panel">
+    <div class="brand-icon"></div>
+    <h1>SecureID</h1>
+    <p>Secure access to your account</p>
+    <div class="footer-note">© 2024 SecureID. All rights reserved.</div>
+  </div>
+
+  <div class="form-panel">
+    <div style="width:100%; max-width:420px;">
+      <div class="mobile-header">
+        <div class="brand-icon"></div>
+        <div style="font-weight:700; font-size:18px;">SecureID</div>
+      </div>
+
+      <div class="step-indicator" id="step-indicator"></div>
+
+      <!-- ============ SCREEN 1: Register details ============ -->
+      <div id="screen-details" class="card">
+        <h2>Create your account</h2>
+        <p class="subtitle">Let's get you started</p>
+
+        <div class="banner error hidden" id="details-banner"></div>
+
+        <form id="details-form">
+          <div class="field" id="field-fullname">
+            <label>Full Name</label>
+            <div class="input-wrap">
+              <input type="text" id="fullName" required />
+            </div>
+          </div>
+
+          <div class="field" id="field-email">
+            <label>Email</label>
+            <div class="input-wrap">
+              <input type="email" id="email" required />
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field" id="field-mobile">
+            <label>Mobile Number</label>
+            <div class="mobile-row">
+              <select id="country-code">
+                <option value="+91">+91</option>
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+                <option value="+61">+61</option>
+              </select>
+              <div class="input-wrap">
+                <input type="tel" id="mobile" required placeholder="98765 43210" />
+              </div>
+            </div>
+          </div>
+
+          <div class="field" id="field-reg-password">
+            <label>Password</label>
+            <div class="input-wrap">
+              <input type="password" id="reg-password" autocomplete="new-password" required />
+              <button type="button" class="icon-right" id="toggle-reg-password"></button>
+            </div>
+          </div>
+
+          <div class="password-requirements">
+            <div class="req" data-check="length"><span class="dot"></span> At least 8 characters</div>
+            <div class="req" data-check="uppercase"><span class="dot"></span> 1 uppercase letter</div>
+            <div class="req" data-check="number"><span class="dot"></span> 1 number</div>
+            <div class="req" data-check="special"><span class="dot"></span> 1 special character</div>
+          </div>
+
+          <div class="strength-meter" id="strength-meter">
+            <div class="strength-bar-track">
+              <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+            </div>
+            <div class="strength-label"><span>Password strength</span><span class="value" id="strength-value">Weak</span></div>
+          </div>
+
+          <div class="form-row-between">
+            <label class="checkbox-row">
+              <input type="checkbox" id="agree-terms" required />
+              I agree to the Terms &amp; Conditions and Privacy Policy
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="details-submit">Create Account</button>
+        </form>
+
+        <p class="bottom-note">Already have an account? <a href="index.html">Login</a></p>
+      </div>
+
+      <!-- ============ SCREEN 2: Email OTP ============ -->
+      <div id="screen-email-otp" class="card hidden">
+        <div class="status-icon neutral" id="email-otp-icon"></div>
+        <h2>Verify your email</h2>
+        <p class="subtitle">We have sent a 6-digit code to<br /><strong id="email-otp-destination"></strong></p>
+
+        <div class="banner error hidden" id="email-otp-banner"></div>
+
+        <div class="otp-inputs" id="email-otp-inputs">
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+        </div>
+
+        <div class="otp-timer" id="email-otp-timer">Code expires in <strong>03:00</strong></div>
+        <div class="otp-resend"><button id="email-otp-resend" disabled>Resend code (00:30)</button></div>
+        <p class="small text-center" id="email-otp-dev"></p>
+      </div>
+
+      <!-- ============ SCREEN 3: Mobile OTP ============ -->
+      <div id="screen-mobile-otp" class="card hidden">
+        <div class="status-icon neutral" id="mobile-otp-icon"></div>
+        <h2>Verify your mobile</h2>
+        <p class="subtitle">We have sent a 6-digit code to<br /><strong id="mobile-otp-destination"></strong></p>
+
+        <div class="banner error hidden" id="mobile-otp-banner"></div>
+
+        <div class="otp-inputs" id="mobile-otp-inputs">
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+        </div>
+
+        <div class="otp-timer" id="mobile-otp-timer">Code expires in <strong>03:00</strong></div>
+        <div class="otp-resend"><button id="mobile-otp-resend" disabled>Resend code (00:30)</button></div>
+        <p class="small text-center" id="mobile-otp-dev"></p>
+      </div>
+
+      <!-- ============ SCREEN 4: Choose MFA method ============ -->
+      <div id="screen-mfa-choose" class="card hidden">
+        <div class="status-icon neutral"></div>
+        <h2>Set up Multi-Factor Auth</h2>
+        <p class="subtitle">Add an extra layer of security to protect your account</p>
+
+        <div class="method-list" id="mfa-method-list"></div>
+
+        <button class="btn btn-primary" id="mfa-choose-continue">Continue</button>
+      </div>
+
+      <!-- ============ SCREEN 5a: Authenticator setup (QR) ============ -->
+      <div id="screen-mfa-authenticator-setup" class="card hidden">
+        <button class="card-back" data-back-to="screen-mfa-choose">‹ Back</button>
+        <div class="status-icon neutral"></div>
+        <h2>Scan QR Code</h2>
+        <p class="subtitle">Open your authenticator app and scan this QR code</p>
+
+        <div class="qr-block">
+          <img id="mfa-qr-image" alt="Authenticator QR code" />
+          <div class="setup-key">Can't scan? Enter setup key<br /><code id="mfa-setup-key"></code></div>
+        </div>
+
+        <button class="btn btn-primary" id="mfa-authenticator-continue">Continue</button>
+      </div>
+
+      <!-- ============ SCREEN 5b: Email/SMS MFA OTP (setup) ============ -->
+      <div id="screen-mfa-otp" class="card hidden">
+        <button class="card-back" data-back-to="screen-mfa-choose">‹ Back</button>
+        <div class="status-icon neutral" id="mfa-otp-icon"></div>
+        <h2 id="mfa-otp-title">Verification</h2>
+        <p class="subtitle">Enter the 6-digit code sent to<br /><strong id="mfa-otp-destination"></strong></p>
+
+        <div class="banner error hidden" id="mfa-otp-banner"></div>
+
+        <div class="otp-inputs" id="mfa-otp-inputs">
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+        </div>
+
+        <div class="otp-timer" id="mfa-otp-timer">Code expires in <strong>03:00</strong></div>
+        <div class="otp-resend"><button id="mfa-otp-resend" disabled>Resend code (00:30)</button></div>
+        <p class="small text-center" id="mfa-otp-dev"></p>
+      </div>
+
+      <!-- ============ SCREEN 6: MFA verification (authenticator code) ============ -->
+      <div id="screen-mfa-verify" class="card hidden">
+        <button class="card-back" data-back-to="screen-mfa-authenticator-setup">‹ Back</button>
+        <div class="status-icon neutral" id="mfa-verify-icon"></div>
+        <h2>Enter the 6-digit code</h2>
+        <p class="subtitle">Enter the code from your authenticator app</p>
+
+        <div class="banner error hidden" id="mfa-verify-banner"></div>
+
+        <div class="otp-inputs" id="mfa-verify-inputs">
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" /><input maxlength="1" inputmode="numeric" />
+        </div>
+        <p class="small text-center">Codes refresh every 30 seconds.</p>
+      </div>
+
+      <!-- ============ SCREEN 7: Success ============ -->
+      <div id="screen-success" class="card hidden">
+        <div class="status-icon success" id="success-icon"></div>
+        <h2>Account created!</h2>
+        <p class="subtitle">Your account has been created successfully and MFA is enabled.</p>
+
+        <ul class="success-list">
+          <li><span class="check">✓</span> Email verified</li>
+          <li><span class="check">✓</span> Mobile verified</li>
+          <li><span class="check">✓</span> MFA enabled</li>
+        </ul>
+
+        <button class="btn btn-primary" id="go-to-login">Continue to Login</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/register.js"></script>
+</body>
+</html>

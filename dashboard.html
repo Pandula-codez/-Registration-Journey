@@ -1,0 +1,43 @@
+npm <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SecureID — Dashboard</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="dash-shell">
+    <div class="dash-card">
+      <h2 style="margin-top:0;">You're logged in</h2>
+      <p class="small">This page loaded your profile via <code>GET /api/me</code>, which reads the httpOnly session cookie set at login and validates it server-side.</p>
+
+      <div id="me-content">Loading...</div>
+
+      <button class="btn btn-primary" id="logout-btn" style="margin-top:20px;">Log out</button>
+    </div>
+  </div>
+
+<script src="js/common.js"></script>
+<script>
+  (async function () {
+    try {
+      const me = await api("/api/me");
+      document.getElementById("me-content").innerHTML = `
+        <div class="dash-row"><span>Full name</span><span>${me.fullName}</span></div>
+        <div class="dash-row"><span>Email</span><span>${me.email}</span></div>
+        <div class="dash-row"><span>Mobile</span><span>${me.mobile}</span></div>
+        <div class="dash-row"><span>MFA enabled</span><span>${me.mfaEnabled ? "Yes (" + me.mfaMethod + ")" : "No"}</span></div>
+      `;
+    } catch (err) {
+      window.location.href = "index.html";
+    }
+  })();
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    await api("/api/logout", { method: "POST" });
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>

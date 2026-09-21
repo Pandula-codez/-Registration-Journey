@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SecureID — Login</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="brand-panel">
+    <div class="brand-icon"></div>
+    <h1>SecureID</h1>
+    <p>Secure access to your account</p>
+    <div class="footer-note">© 2024 SecureID. All rights reserved.</div>
+  </div>
+
+  <div class="form-panel">
+    <div style="width:100%; max-width:420px;">
+      <div class="mobile-header">
+        <div class="brand-icon"></div>
+        <div style="font-weight:700; font-size:18px;">SecureID</div>
+      </div>
+
+      <!-- ============ SCREEN: LOGIN (default / invalid credentials) ============ -->
+      <div id="screen-login" class="card">
+        <div class="status-icon neutral" id="login-icon"></div>
+        <h2>Welcome back!</h2>
+        <p class="subtitle">Login to your account</p>
+
+        <div class="banner error hidden" id="login-banner">Invalid email or password. Please try again.</div>
+
+        <form id="login-form">
+          <div class="field" id="field-identifier">
+            <label>Email or Username</label>
+            <div class="input-wrap has-icon">
+              <span class="icon-left"></span>
+              <input type="text" id="identifier" autocomplete="username" required />
+            </div>
+          </div>
+
+          <div class="field" id="field-password">
+            <label>Password</label>
+            <div class="input-wrap has-icon">
+              <span class="icon-left"></span>
+              <input type="password" id="login-password" autocomplete="current-password" required />
+              <button type="button" class="icon-right" id="toggle-login-password"></button>
+            </div>
+          </div>
+
+          <div class="form-row-between">
+            <label class="checkbox-row"><input type="checkbox" id="remember-me" /> Remember me</label>
+            <a href="#" id="forgot-password">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="login-submit">Login</button>
+        </form>
+
+        <div class="divider">or</div>
+        <button class="btn btn-secondary" id="google-login"></button>
+
+        <p class="bottom-note">New here? <a href="register.html">Create an account</a></p>
+      </div>
+
+      <!-- ============ SCREEN: CHOOSE MFA METHOD ============ -->
+      <div id="screen-choose-method" class="card hidden">
+        <button class="card-back" data-back-to="screen-login">‹ Back</button>
+        <div class="status-icon neutral"></div>
+        <h2>Verify your identity</h2>
+        <p class="subtitle">Choose a method to continue</p>
+
+        <div class="method-list" id="login-method-list"></div>
+
+        <button class="btn btn-primary" id="choose-method-continue" disabled>Continue</button>
+      </div>
+
+      <!-- ============ SCREEN: LOGIN OTP (email/sms) ============ -->
+      <div id="screen-login-otp" class="card hidden">
+        <button class="card-back" data-back-to="screen-choose-method">‹ Back</button>
+        <div class="status-icon neutral" id="login-otp-icon"></div>
+        <h2 id="login-otp-title">Email Verification</h2>
+        <p class="subtitle">Enter the 6-digit code sent to<br /><strong id="login-otp-destination"></strong></p>
+
+        <div class="banner error hidden" id="login-otp-banner"></div>
+
+        <div class="otp-inputs" id="login-otp-inputs">
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+        </div>
+
+        <div class="otp-timer" id="login-otp-timer">Code expires in <strong>03:00</strong></div>
+        <div class="otp-resend" id="login-otp-resend-wrap">
+          <button id="login-otp-resend" disabled>Resend code (00:30)</button>
+        </div>
+        <p class="small text-center" id="login-otp-dev"></p>
+      </div>
+
+      <!-- ============ SCREEN: AUTHENTICATOR CODE (login) ============ -->
+      <div id="screen-login-authenticator" class="card hidden">
+        <button class="card-back" data-back-to="screen-choose-method">‹ Back</button>
+        <div class="status-icon neutral"></div>
+        <h2>Enter authenticator code</h2>
+        <p class="subtitle">Enter the 6-digit code from your authenticator app</p>
+
+        <div class="banner error hidden" id="login-auth-banner"></div>
+
+        <div class="otp-inputs" id="login-auth-inputs">
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+          <input maxlength="1" inputmode="numeric" />
+        </div>
+        <p class="small text-center">Codes refresh every 30 seconds.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>
